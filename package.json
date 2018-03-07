@@ -1,0 +1,26 @@
+{
+  "name": "clusterun",
+  "description": "Run tasks in cluster mode.",
+  "version": "0.1.0",
+  "main": "./src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node ./test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shenfe/clusterun.git"
+  },
+  "keywords": [
+    "cluster",
+    "parallel"
+  ],
+  "author": "hengwu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shenfe/clusterun/issues"
+  },
+  "homepage": "https://github.com/shenfe/clusterun#readme"
+}
