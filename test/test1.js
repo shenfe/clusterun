@@ -1,8 +1,13 @@
-const { clusterun, registerTask, dispatchTask } = require('../src');
+const { clusterun, registerTask, dispatchTask, whoami } = require('../src');
 
-let number = 10000;
+const { spend, wait } = require('./helper');
+
+let number = 100;
 
 let runner = function () {
+    console.time('all done');
+    whoami('runner');
+
     registerTask('compute', String);
 
     for (let i = 0; i < number; i++) {
@@ -10,18 +15,20 @@ let runner = function () {
     }
 };
 
-let handler = function (taskName, taskData) {
+let handler = async function (taskName, taskData) {
+    // await wait(1000);
+    spend(200);
     return taskData * taskData;
 };
 
 let count = 0;
 let callback = function (taskName, taskSourceData, taskResultData) {
-    // console.log(...arguments);
     count++;
-    if (count >= number) {
-        console.timeEnd('all done')
-    }
+    (count >= number) && console.timeEnd('all done');
 };
 
-console.time('all done');
-clusterun(runner, handler, callback);
+clusterun(runner, handler, callback, {
+    // clusterNumber: 2
+});
+
+whoami('after');

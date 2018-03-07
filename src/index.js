@@ -1,7 +1,7 @@
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
-const debugging = true;
+const debugging = false;
 
 const consoleLog = function (...args) {
     debugging && console.log(...args);
@@ -83,6 +83,7 @@ const main = (runner, handler, callback, options = {}) => {
         consoleLog(`主进程 ${process.pid} 正在运行`);
 
         const clusterNumber = options.clusterNumber || numCPUs;
+        const autoRestartWorker = !!options.autoRestart;
         for (let i = 0; i < clusterNumber; i++) {
             cluster.fork();
         }
@@ -90,8 +91,10 @@ const main = (runner, handler, callback, options = {}) => {
         cluster.on('exit', (worker, code, signal) => {
             consoleLog(`工作进程 ${worker.id} 退出:`);
             consoleLog(`exitedAfterDisconnect ${worker.exitedAfterDisconnect}, signal ${signal}, code ${code}`);
-            consoleLog('重启...');
-            cluster.fork();
+            if (autoRestartWorker) {
+                consoleLog('重启...');
+                cluster.fork();
+            }
         });
 
         cluster.on('message', (worker, msg, handle) => {
@@ -121,8 +124,25 @@ const main = (runner, handler, callback, options = {}) => {
     }
 };
 
+const whoami = (flag, silent) => {
+    const log = (...args) => {
+        !silent && console.log(...args);
+    };
+    if (cluster.isMaster) {
+        log('i am master  ~~~~~~~~~~~~~~~~', flag);
+        return 0;
+    } else if (cluster.isWorker) {
+        log('i am worker  ~~~~~~~~~~~~~~~~', flag);
+        return 1;
+    } else {
+        log('i am nothing ~~~~~~~~~~~~~~~~', flag);
+        return -1;
+    }
+};
+
 module.exports = {
     registerTask: registerTaskType,
     dispatchTask: assignTask,
-    clusterun: main
+    clusterun: main,
+    whoami
 };
