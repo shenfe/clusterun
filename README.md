@@ -53,6 +53,14 @@ Dispatch a task to Worker. Called by Master.
 dispatchTask('my-computing-task', taskData);
 ```
 
+### helper functions
+
+name | function | usage
+:---: | :--- | :---
+whoami | check the role of the current process, and output logs if any | `role = whoami()` `whoami('computing task A')`
+ifMaster | run if the current is Master | `ifMaster() && doSth()` `ifMaster(doSth)`
+ifWorker | run if the current is Worker | `ifWorker() && doSth()` `ifWorker(doSth)`
+
 ## License
 
 MIT

@@ -152,14 +152,16 @@ const whoami = (flag, silent) => {
 
 const ifMaster = fn => {
     if (cluster.isMaster) {
-        return fn && fn();
+        fn && fn();
+        return true;
     }
     return false;
 };
 
 const ifWorker = fn => {
     if (cluster.isWorker) {
-        return fn && fn();
+        fn && fn();
+        return true;
     }
     return false;
 };
