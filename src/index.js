@@ -128,21 +128,47 @@ const whoami = (flag, silent) => {
     const log = (...args) => {
         !silent && console.log(...args);
     };
-    if (cluster.isMaster) {
-        log('i am master  ~~~~~~~~~~~~~~~~', flag);
-        return 0;
-    } else if (cluster.isWorker) {
-        log('i am worker  ~~~~~~~~~~~~~~~~', flag);
-        return 1;
-    } else {
-        log('i am nothing ~~~~~~~~~~~~~~~~', flag);
-        return -1;
+    let logArgs = flag;
+    if (typeof flag !== 'function') {
+        let flags = flag;
+        if (typeof flag !== 'object') {
+            flags = {
+                '0': `i am master (${process.pid})  ~~~~~~~~~~~~~~~~ ${flag}`,
+                '1': () => `i am worker (${process.pid} as ${cluster.worker.id}) ~~~~~~~~~~~~~~~~ ${flag}`,
+                '-1': `i am nothing ~~~~~~~~~~~~~~~~ ${flag}`
+            };
+        }
+        logArgs = r => (typeof flags[r] !== 'function' ? flags[r] : flags[r]());
     }
+    let r = -1;
+    if (cluster.isMaster) {
+        r = 0;
+    } else if (cluster.isWorker) {
+        r = 1;
+    }
+    log(logArgs(r));
+    return r;
+};
+
+const ifMaster = fn => {
+    if (cluster.isMaster) {
+        return fn && fn();
+    }
+    return false;
+};
+
+const ifWorker = fn => {
+    if (cluster.isWorker) {
+        return fn && fn();
+    }
+    return false;
 };
 
 module.exports = {
     registerTask: registerTaskType,
     dispatchTask: assignTask,
     clusterun: main,
-    whoami
+    whoami,
+    ifMaster,
+    ifWorker
 };

@@ -1,8 +1,14 @@
-const { clusterun, registerTask, dispatchTask, whoami } = require('../src');
+const { clusterun, registerTask, dispatchTask, whoami, ifMaster } = require('../src');
 
 const { spend, wait } = require('./helper');
 
-let number = 100;
+const number = 100;
+
+setInterval(() => {
+    // whoami(`before, interval`);
+}, 1000);
+
+/////////////////////////////////////////////////////////////////////
 
 let runner = function () {
     console.time('all done');
@@ -17,18 +23,25 @@ let runner = function () {
 
 let handler = async function (taskName, taskData) {
     // await wait(1000);
-    spend(200);
+    spend(100);
     return taskData * taskData;
 };
 
 let count = 0;
 let callback = function (taskName, taskSourceData, taskResultData) {
     count++;
-    (count >= number) && console.timeEnd('all done');
+    if (count >= number) {
+        console.timeEnd('all done');
+        process.exit();
+    }
 };
 
-clusterun(runner, handler, callback, {
-    // clusterNumber: 2
-});
+clusterun(runner, handler, callback);
+
+/////////////////////////////////////////////////////////////////////
 
 whoami('after');
+
+ifMaster(_=> {
+    whoami('end');
+});
