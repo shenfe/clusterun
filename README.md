@@ -1,6 +1,6 @@
 # clusterun
 
-> Run tasks in cluster mode easily.
+💠 Run tasks in cluster mode easily, for CPU-intensive programs.
 
 ## Installation
 
