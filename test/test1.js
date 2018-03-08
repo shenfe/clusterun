@@ -4,14 +4,11 @@ const { spend, wait } = require('./helper');
 
 const number = 100;
 
-setInterval(() => {
-    // whoami(`before, interval`);
-}, 1000);
+whoami(`before`);
 
 /////////////////////////////////////////////////////////////////////
 
 let runner = function () {
-    console.time('all done');
     whoami('runner');
 
     registerTask('compute', String);
@@ -36,6 +33,7 @@ let callback = function (taskName, taskSourceData, taskResultData) {
     }
 };
 
+console.time('all done');
 clusterun(runner, handler, callback);
 
 /////////////////////////////////////////////////////////////////////
