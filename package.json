@@ -1,7 +1,7 @@
 {
   "name": "clusterun",
   "description": "Run tasks in cluster mode.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./src/index.js",
   "directories": {
     "test": "test"

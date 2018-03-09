@@ -1,6 +1,6 @@
 # clusterun
 
-> Run tasks in cluster mode easily.
+💠 Run tasks in cluster mode easily, for CPU-intensive programs.
 
 ## Installation
 
@@ -57,9 +57,9 @@ dispatchTask('my-computing-task', taskData);
 
 name | function | usage
 :---: | :--- | :---
-whoami | check the role of the current process, and output logs if any | `role = whoami()` `whoami('computing task A')`
-ifMaster | run if the current is Master | `ifMaster() && doSth()` `ifMaster(doSth)`
-ifWorker | run if the current is Worker | `ifWorker() && doSth()` `ifWorker(doSth)`
+whoami | check the role of the current process, and output logs if any | `role = whoami()` <br> `whoami('computing task A')`
+ifMaster | run if the current is Master | `ifMaster() && doSth()` <br> `ifMaster(doSth)`
+ifWorker | run if the current is Worker | `ifWorker() && doSth()` <br> `ifWorker(doSth)`
 
 ## License
 

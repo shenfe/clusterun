@@ -19,7 +19,7 @@ let runner = function () {
 };
 
 let handler = async function (taskName, taskData) {
-    // await wait(1000);
+    // await wait(100);
     spend(100);
     return taskData * taskData;
 };
