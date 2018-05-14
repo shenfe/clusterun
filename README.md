@@ -18,7 +18,7 @@ Master => Workers => Master
 const { clusterun, registerTask, dispatchTask } = require('clusterun');
 
 const runner = function () {
-    // run by Master, to create tasks and dispatch them to Workers
+    // run by Master, to create tasks, register and dispatch them to Workers
 };
 
 const handler = async function (taskName, taskData) {
